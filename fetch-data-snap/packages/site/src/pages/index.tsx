@@ -119,7 +119,11 @@ const Index = () => {
 
   const handleSendHelloClick = async () => {
     try {
-      await sendHello();
+      const voterId = prompt('Enter The Id You want to search for', undefined);
+      if (!voterId) {
+        throw new Error('No Voter Id Entered');
+      }
+      await sendHello(voterId);
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });

@@ -10,11 +10,13 @@ type Person = {
 };
 
 // eslint-disable-next-line jsdoc/require-jsdoc
-async function getData(): Promise<Person> {
-  const data = await fetch('https://people-db.onrender.com/getAllPeople');
-  const dataJson: Person[] = await data.json();
-  console.log(dataJson[0]);
-  return dataJson[0];
+async function getData(voterId: string): Promise<Person> {
+  const data = await fetch(
+    `https://people-db.onrender.com/getPerson/${voterId}`,
+  );
+  const dataJson: Person = await data.json();
+  console.log(dataJson);
+  return dataJson;
 }
 
 /**
@@ -28,10 +30,27 @@ async function getData(): Promise<Person> {
  * @throws If the request method is not valid for this snap.
  */
 export const onRpcRequest: OnRpcRequestHandler = ({ origin, request }) => {
-  console.log('These are the params', request.params);
+  // @ts-ignore
+  console.log('These are the params', request.params.voterId);
   switch (request.method) {
-    case 'hello':
-      return getData().then((data) => {
+    case 'hello': // @ts-ignore
+      return getData(request.params.voterId).then((data) => {
+        console.log(data);
+        if (data.voterId === undefined) {
+          return snap.request({
+            method: 'snap_dialog',
+            params: {
+              type: 'alert',
+              content: panel([
+                text(
+                  // eslint-disable-next-line prefer-template -- string concat
+                  'No Data Avaialble for the Voter Id ' +
+                    request.params.voterId,
+                ),
+              ]),
+            },
+          });
+        }
         return snap.request({
           method: 'snap_dialog',
           params: {

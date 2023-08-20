@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ComponentProps } from 'react';
 import styled from 'styled-components';
 import { MetamaskState } from '../hooks';
@@ -95,7 +96,7 @@ export const ReconnectButton = (props: ComponentProps<typeof Button>) => {
 };
 
 export const SendHelloButton = (props: ComponentProps<typeof Button>) => {
-  return <Button {...props}>Send message</Button>;
+  return <Button {...props}>Request Data</Button>;
 };
 
 export const HeaderButtons = ({

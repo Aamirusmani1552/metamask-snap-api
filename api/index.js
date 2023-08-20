@@ -4,8 +4,10 @@ const ConnectDb = require('./Db/Connect');
 const Person = require('./Db/Models/PersonModel.js');
 const app = express();
 const PORT = 8000
+const cors = require('cors');
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get("/",(req,res)=>{
     res.status(200).json({msg: "Welcome to the Person Database"});
